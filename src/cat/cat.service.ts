@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { LoggerService } from 'src/logger/logger.service';
 @Injectable()
 export class CatService {
-  private readonly cats: any = [];
+  private readonly cats: any[] = [];
 
   constructor(private myLogger: LoggerService) {
     this.myLogger.setContext('CatService');
@@ -12,7 +12,12 @@ export class CatService {
 
   findAll(): any {
     // You can call all the default methods
-    this.myLogger.warn('About to return cats!');
     return this.cats;
+  }
+
+  create(): any {
+    try {
+      // const currentCat = this.cats.find(x => x.id === );
+    } catch (error) {}
   }
 }
