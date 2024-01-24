@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { LoggerService } from 'src/logger/logger.service';
 @Injectable()
 export class CatService {
@@ -12,6 +12,8 @@ export class CatService {
 
   findAll(): any {
     // You can call all the default methods
+    throw new NotFoundException();
+
     return this.cats;
   }
 
