@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { LoggerService } from './logger/logger.service';
 import { ValidationPipe } from '@nestjs/common';
+import { HttpExceptionFilter } from './services/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -21,6 +22,10 @@ async function bootstrap() {
       transform: true, // convert object form req to exaclly data defined in dto
     }),
   );
+
+  // cath all exception http error
+
+  // app.useGlobalFilters(new HttpExceptionFilter());
 
   await app.listen(3000);
 }

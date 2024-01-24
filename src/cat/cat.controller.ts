@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt';
 import { LoggerService } from 'src/logger/logger.service';
 import { CatService } from './cat.service';
 import {
@@ -21,15 +22,12 @@ export class CatController {
   ) {}
 
   @Get()
-  @UseFilters(new HttpExceptionFilter())
   findAll(): any {
-    this.myLogger.log('Api: /cat => get all', 'CatController');
     return this.catService.findAll();
   }
 
   @Post()
   create(@Body() createCatDto: CreateCatDto): any {
-    this.myLogger.log('APi /cat => create', 'CatController');
     return 'Create Cat';
   }
 }
