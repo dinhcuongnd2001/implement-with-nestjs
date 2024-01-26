@@ -12,9 +12,11 @@ export class CatService {
 
   findAll(): any {
     // You can call all the default methods
-    throw new NotFoundException();
-
-    return this.cats;
+    try {
+      return this.cats;
+    } catch (error) {
+      throw new NotFoundException();
+    }
   }
 
   create(): any {

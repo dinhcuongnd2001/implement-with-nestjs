@@ -3,8 +3,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { LoggerModule } from './logger/logger.module';
 import { CatModule } from './cat/cat.module';
-import { APP_FILTER } from '@nestjs/core';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { HttpExceptionFilter } from './services/http-exception.filter';
+import { TransformInterceptor } from './common/transform.interceptor';
 
 @Module({
   imports: [LoggerModule, CatModule],
@@ -13,6 +14,10 @@ import { HttpExceptionFilter } from './services/http-exception.filter';
     {
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: TransformInterceptor,
     },
     AppService,
   ],
