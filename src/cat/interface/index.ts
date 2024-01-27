@@ -1,4 +1,3 @@
-export interface Cart {
-  id: string;
+export interface Cat {
   name: string;
 }

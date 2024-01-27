@@ -12,22 +12,19 @@ import {
 } from '@nestjs/common';
 import { CreateCatDto } from './dto';
 import { NotFoundException } from 'src/common/exception';
-import { HttpExceptionFilter } from 'src/services/http-exception.filter';
+import { HttpExceptionFilter } from 'src/common/http-exception.filter';
 
 @Controller('cat')
 export class CatController {
-  constructor(
-    private readonly catService: CatService,
-    private myLogger: LoggerService,
-  ) {}
+  constructor(private readonly catService: CatService) {}
 
   @Get()
-  findAll() {
-    return this.catService.findAll();
+  async findAll() {
+    return await this.catService.findAll();
   }
 
   @Post()
-  create(@Body() createCatDto: CreateCatDto) {
-    return this.catService.create(createCatDto);
+  async create(@Body() createCatDto: CreateCatDto) {
+    return await this.catService.create(createCatDto);
   }
 }
