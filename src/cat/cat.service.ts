@@ -7,38 +7,41 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { LoggerService } from 'src/logger/logger.service';
-import { Cart } from './interface';
+import { Cat } from './interface';
+import { PrismaService } from 'src/prisma/prisma.service';
 @Injectable()
 export class CatService {
-  private readonly cats: Cart[] = [
-    { id: '1', name: 'abc' },
-    { id: '2', name: 'bca' },
-  ];
-
-  constructor(private myLogger: LoggerService) {
+  constructor(
+    private myLogger: LoggerService,
+    private prisma: PrismaService,
+  ) {
     this.myLogger.setContext('CatService');
   }
 
-  //   constructor() {}
-
-  findAll(): Cart[] {
+  async findAll() {
     // You can call all the default methods
     try {
-      return this.cats;
+      return await this.prisma.cat.findMany();
     } catch (error) {
       throw new NotFoundException();
     }
   }
 
-  create(data: Cart): Cart {
+  async create(data: Cat) {
     try {
-      const currentCat = this.cats.find((x) => x.id === data.id);
-      if (currentCat)
+      const currentCat = await this.prisma.cat.findFirst({
+        where: {
+          name: data.name,
+        },
+      });
+      if (currentCat) {
         throw new HttpException('Cart is exist', HttpStatus.CONFLICT);
-
-      this.cats.push(data);
-      return data;
+      }
+      return await this.prisma.cat.create({
+        data,
+      });
     } catch (error) {
+      console.log('error :', error);
       throw new ConflictException(
         error.response || 'Server error',
         error.status || '500',
