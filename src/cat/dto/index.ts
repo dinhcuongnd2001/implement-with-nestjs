@@ -1,11 +1,17 @@
-import { IsEmail, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class CreateCatDto {
-  @IsEmail(undefined, { message: 'Must be Email' })
-  email: string;
+  @IsString({ message: 'Id Must be string' })
+  id: string;
 
   @IsNotEmpty({ message: 'Must be string' })
-  password: string;
+  name: string;
 
   @IsNumber(undefined, { message: 'Number required' })
   @IsOptional()

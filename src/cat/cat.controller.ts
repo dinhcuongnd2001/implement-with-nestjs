@@ -22,12 +22,12 @@ export class CatController {
   ) {}
 
   @Get()
-  findAll(): any {
+  findAll() {
     return this.catService.findAll();
   }
 
   @Post()
-  create(@Body() createCatDto: CreateCatDto): any {
-    return 'Create Cat';
+  create(@Body() createCatDto: CreateCatDto) {
+    return this.catService.create(createCatDto);
   }
 }
