@@ -16,9 +16,8 @@ import { ConfigModule } from '@nestjs/config';
     PrismaModule,
     ConfigModule.forRoot({
       isGlobal: true,
-      ignoreEnvFile: true,
       envFilePath:
-        process.env.NODE_ENV == 'production' ? 'production.env' : 'dev.env',
+        process.env.NODE_ENV == 'production' ? './production.env' : './dev.env',
     }),
   ],
   controllers: [AppController],
