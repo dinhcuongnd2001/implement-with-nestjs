@@ -17,9 +17,6 @@ async function bootstrap() {
 
   //
 
-  console.log('process :', process.env);
-  console.log('config :', new ConfigService().get('DATABASE_USER'));
-
   // auto validate
   app.useGlobalPipes(
     new ValidationPipe({
