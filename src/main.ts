@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import { LoggerService } from './logger/logger.service';
 import { ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter } from './common/http-exception.filter';
-import { ConfigService } from '@nestjs/config';
+import { google } from 'googleapis';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -29,6 +29,10 @@ async function bootstrap() {
   // cath all exception http error
 
   // app.useGlobalFilters(new HttpExceptionFilter());
+
+  const blogger = google.docs('v1');
+
+  console.log('docs :', blogger);
 
   await app.listen(process.env.PORT || 3055);
 }
