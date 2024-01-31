@@ -2,8 +2,10 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { LoggerService } from './logger/logger.service';
 import { ValidationPipe } from '@nestjs/common';
-import { HttpExceptionFilter } from './common/http-exception.filter';
 import { google } from 'googleapis';
+import { docs } from '@googleapis/docs';
+import * as path from 'path';
+import { authenticate } from '@google-cloud/local-auth';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -30,9 +32,29 @@ async function bootstrap() {
 
   // app.useGlobalFilters(new HttpExceptionFilter());
 
-  const blogger = google.docs('v1');
+  // initial:
 
-  console.log('docs :', blogger);
+  const auth = await authenticate({
+    keyfilePath: path.join(__dirname, '../google_secret.json'),
+    scopes: 'https://www.googleapis.com/auth/documents',
+  });
+
+  const docs = google.docs('v1');
+  google.options({ auth });
+
+  const res = await docs.documents.get({
+    documentId: '1t_DyPR39WwFhE5pq7BLqHRmxDYuIrQMqx5bq1cNvgSg',
+  });
+
+  // const data = await docs.documents.create({
+  //   requestBody: {
+  //     title: 'Test create document',
+  //   },
+  // });
+
+  console.log(res.data);
+
+  // console.log('currentData :', currentData);
 
   await app.listen(process.env.PORT || 3055);
 }
