@@ -35,25 +35,56 @@ async function bootstrap() {
   // app.useGlobalFilters(new HttpExceptionFilter());
 
   // initial:
+  const auth = new google.auth.GoogleAuth({
+    keyFile: path.join(__dirname, '../credentials.json'), // Path to your JSON key file
+    scopes: ['https://www.googleapis.com/auth/documents'], // Scope for Google Docs
+  });
 
-  // const auth = await authenticate({
-  //   keyfilePath: path.join(__dirname, '../google_secret.json'),
-  //   scopes: 'https://www.googleapis.com/auth/documents',
-  // });
+  async function writeGoogleDocs(documentId, requests) {
+    try {
+      const docs = google.docs({ version: 'v1', auth }); // Create a Google Docs API client
 
-  // const docs = google.docs('v1');
-  // google.options({ auth });
+      // Send a batchUpdate request to modify the document
+      const writer = await docs.documents.batchUpdate({
+        documentId, // ID of the document to update
+        requestBody: {
+          requests, // Array of requests detailing the changes to be made
+        },
+      });
+      return writer; // Return the response from the Google Docs API
+    } catch (error) {
+      console.error('error', error); // Log any errors that occur
+    }
+  }
 
-  // const res = await docs.documents.get({
-  //   documentId: '1t_DyPR39WwFhE5pq7BLqHRmxDYuIrQMqx5bq1cNvgSg',
-  // });
+  async function readGoogleDocs(documentId: string) {
+    try {
+      const docs = google.docs({ version: 'v1', auth }); // Create a Google Docs API client
 
-  // const data = await docs.documents.create({
-  //   requestBody: {
-  //     title: 'Test create document',
-  //   },
-  // });
-  new GoogleAuth().getDocument();
+      // Retrieve the document content
+      const response = await docs.documents.get({ documentId }); // ID of the document to read
+      return response.data; // Return the document data
+    } catch (error) {
+      console.error('error', error); // Log any errors that occur
+    }
+  }
+
+  // const data = await readGoogleDocs(
+  //   '1t_DyPR39WwFhE5pq7BLqHRmxDYuIrQMqx5bq1cNvgSg',
+  // );
+
+  await writeGoogleDocs('1t_DyPR39WwFhE5pq7BLqHRmxDYuIrQMqx5bq1cNvgSg', [
+    {
+      insertText: {
+        location: {
+          index: 1, // Specify the index to insert text
+        },
+        text: 'Hello CodingWithAdo Fans!\n', // Text to be inserted
+      },
+    },
+  ]);
+
+  // new GoogleAuth().getDocument();
   await app.listen(process.env.PORT || 3055);
 }
 bootstrap();
