@@ -6,6 +6,7 @@ import { google } from 'googleapis';
 import { docs } from '@googleapis/docs';
 import * as path from 'path';
 import { authenticate } from '@google-cloud/local-auth';
+import { GoogleAuth } from './google-auth/google-auth';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -28,34 +29,31 @@ async function bootstrap() {
     }),
   );
 
+  GoogleAuth;
   // cath all exception http error
 
   // app.useGlobalFilters(new HttpExceptionFilter());
 
   // initial:
 
-  const auth = await authenticate({
-    keyfilePath: path.join(__dirname, '../google_secret.json'),
-    scopes: 'https://www.googleapis.com/auth/documents',
-  });
+  // const auth = await authenticate({
+  //   keyfilePath: path.join(__dirname, '../google_secret.json'),
+  //   scopes: 'https://www.googleapis.com/auth/documents',
+  // });
 
-  const docs = google.docs('v1');
-  google.options({ auth });
+  // const docs = google.docs('v1');
+  // google.options({ auth });
 
-  const res = await docs.documents.get({
-    documentId: '1t_DyPR39WwFhE5pq7BLqHRmxDYuIrQMqx5bq1cNvgSg',
-  });
+  // const res = await docs.documents.get({
+  //   documentId: '1t_DyPR39WwFhE5pq7BLqHRmxDYuIrQMqx5bq1cNvgSg',
+  // });
 
   // const data = await docs.documents.create({
   //   requestBody: {
   //     title: 'Test create document',
   //   },
   // });
-
-  console.log(res.data);
-
-  // console.log('currentData :', currentData);
-
+  new GoogleAuth().getDocument();
   await app.listen(process.env.PORT || 3055);
 }
 bootstrap();

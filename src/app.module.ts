@@ -8,6 +8,7 @@ import { HttpExceptionFilter } from './common/http-exception.filter';
 import { TransformInterceptor } from './common/transform.interceptor';
 import { PrismaModule } from './prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
+import { GoogleAuthModule } from './google-auth/google-auth.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { ConfigModule } from '@nestjs/config';
       envFilePath:
         process.env.NODE_ENV == 'production' ? './production.env' : './dev.env',
     }),
+    GoogleAuthModule,
   ],
   controllers: [AppController],
   providers: [
