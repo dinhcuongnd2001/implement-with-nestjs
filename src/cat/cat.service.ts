@@ -41,7 +41,6 @@ export class CatService {
         data,
       });
     } catch (error) {
-      console.log('error :', error);
       throw new ConflictException(
         error.response || 'Server error',
         error.status || '500',

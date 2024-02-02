@@ -2,8 +2,6 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { LoggerService } from './logger/logger.service';
 import { ValidationPipe } from '@nestjs/common';
-import { HttpExceptionFilter } from './common/http-exception.filter';
-import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -16,9 +14,6 @@ async function bootstrap() {
   app.useLogger(app.get(LoggerService));
 
   //
-
-  console.log('process :', process.env);
-  console.log('config :', new ConfigService().get('DATABASE_USER'));
 
   // auto validate
   app.useGlobalPipes(
